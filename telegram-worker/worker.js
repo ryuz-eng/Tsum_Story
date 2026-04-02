@@ -92,6 +92,59 @@ const formatMessage = (data) => {
   return formatReviewMessage(data);
 };
 
+const postTelegramText = async (botToken, chatId, text) =>
+  fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json; charset=utf-8" },
+    body: JSON.stringify({
+      chat_id: chatId,
+      text,
+      disable_web_page_preview: true
+    })
+  });
+
+const parseImageDataUrl = (dataUrl) => {
+  const text = String(dataUrl || "").trim();
+  const match = text.match(/^data:(image\/[a-zA-Z0-9.+-]+);base64,(.+)$/);
+  if (!match) {
+    return null;
+  }
+
+  const mimeType = match[1];
+  const base64 = match[2];
+  try {
+    const binary = atob(base64);
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i += 1) {
+      bytes[i] = binary.charCodeAt(i);
+    }
+    return { mimeType, bytes };
+  } catch {
+    return null;
+  }
+};
+
+const postTelegramPhoto = async (botToken, chatId, fileName, dataUrl) => {
+  const parsed = parseImageDataUrl(dataUrl);
+  if (!parsed) {
+    return null;
+  }
+
+  const form = new FormData();
+  form.append("chat_id", chatId);
+  form.append(
+    "photo",
+    new Blob([parsed.bytes], { type: parsed.mimeType }),
+    cleanText(fileName, 80) || "reference.jpg"
+  );
+  form.append("caption", "Reference photo attached.");
+
+  return fetch(`https://api.telegram.org/bot${botToken}/sendPhoto`, {
+    method: "POST",
+    body: form
+  });
+};
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -134,18 +187,24 @@ export default {
     }
 
     const text = formatMessage(payload);
-    const telegramResponse = await fetch(
-      `https://api.telegram.org/bot${botToken}/sendMessage`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json; charset=utf-8" },
-        body: JSON.stringify({
-          chat_id: chatId,
-          text,
-          disable_web_page_preview: true
-        })
+    if (payload?.order?.referencePhotoDataUrl) {
+      const photoResponse = await postTelegramPhoto(
+        botToken,
+        chatId,
+        payload?.order?.referencePhotoName || "reference.jpg",
+        payload?.order?.referencePhotoDataUrl
+      );
+      if (photoResponse && !photoResponse.ok) {
+        const photoDetails = await photoResponse.text();
+        return json(
+          502,
+          { ok: false, error: "Telegram photo upload error", details: photoDetails.slice(0, 300) },
+          corsHeaders
+        );
       }
-    );
+    }
+
+    const telegramResponse = await postTelegramText(botToken, chatId, text);
 
     if (!telegramResponse.ok) {
       const details = await telegramResponse.text();

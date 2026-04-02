@@ -7,6 +7,7 @@
   const thanksClose = document.getElementById("orderThanksClose");
   const storageKey = "tsum_story_drawing_order";
   const maxStoredPhotoBytes = 1400000;
+  const maxTelegramPhotoBytes = 8000000;
   const telegramNotifyTimeoutMs = 9000;
 
   if (!form || !preview) {
@@ -51,6 +52,7 @@
             delivery: orderPayload.delivery,
             dueDate: orderPayload.dueDate,
             referencePhotoName: orderPayload.referencePhotoName,
+            referencePhotoDataUrl: orderPayload.referencePhotoDataUrl,
             notes: orderPayload.notes
           }
         }),
@@ -163,16 +165,28 @@
     let referencePhotoDataUrl = "";
     let referencePhotoName = file ? file.name : "";
     let storageMessage = "Drawing request saved.";
+    let telegramPhotoDataUrl = "";
+    let telegramPhotoMissingNote = "";
 
-    if (file && file.size <= maxStoredPhotoBytes && file.type.startsWith("image/")) {
-      try {
-        referencePhotoDataUrl = await readFileAsDataUrl(file);
-      } catch {
-        referencePhotoDataUrl = "";
+    if (file && file.type.startsWith("image/")) {
+      if (file.size <= maxTelegramPhotoBytes) {
+        try {
+          telegramPhotoDataUrl = await readFileAsDataUrl(file);
+        } catch {
+          telegramPhotoDataUrl = "";
+          telegramPhotoMissingNote = " Photo could not be read for Telegram.";
+        }
+      } else {
+        telegramPhotoMissingNote =
+          " Photo not sent to Telegram because file is too large.";
       }
-    } else if (file) {
-      storageMessage =
-        "Drawing request saved. Photo preview not stored because file is too large.";
+
+      if (file.size <= maxStoredPhotoBytes && telegramPhotoDataUrl) {
+        referencePhotoDataUrl = telegramPhotoDataUrl;
+      } else {
+        storageMessage =
+          "Drawing request saved. Photo preview not stored because file is too large.";
+      }
     }
 
     const payload = {
@@ -182,6 +196,10 @@
       referencePhotoName,
       referencePhotoDataUrl,
       notes: (data.get("notes") || "").toString().trim()
+    };
+    const notifyPayload = {
+      ...payload,
+      referencePhotoDataUrl: telegramPhotoDataUrl
     };
 
     try {
@@ -198,13 +216,13 @@
     openThanks();
 
     setStatus(`${storageMessage} Sending Telegram notification...`);
-    const notifyResult = await sendTelegramNotification(payload);
+    const notifyResult = await sendTelegramNotification(notifyPayload);
     if (notifyResult.status === "sent") {
-      setStatus(`${storageMessage} Sent to Telegram.`);
+      setStatus(`${storageMessage}${telegramPhotoMissingNote} Sent to Telegram.`);
     } else if (notifyResult.status === "skipped") {
-      setStatus(`${storageMessage} Telegram is not connected yet.`);
+      setStatus(`${storageMessage}${telegramPhotoMissingNote} Telegram is not connected yet.`);
     } else {
-      setStatus(`${storageMessage} Telegram send failed.`);
+      setStatus(`${storageMessage}${telegramPhotoMissingNote} Telegram send failed.`);
     }
   });
 
