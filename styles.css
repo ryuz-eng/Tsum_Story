@@ -781,6 +781,16 @@ h2 {
   min-height: 140px;
 }
 
+.order-photo-preview {
+  display: block;
+  width: min(100%, 220px);
+  max-height: 180px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid #f3cda4;
+  margin-top: 8px;
+}
+
 .preview-card.empty {
   color: #8b7e70;
   display: grid;

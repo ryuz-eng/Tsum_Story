@@ -35,19 +35,6 @@
 
       <form id="drawOrderForm" class="review-form order-form">
         <label>
-          Main Character
-          <select name="character" required>
-            <option value="">Choose one</option>
-            <option>Minnie</option>
-            <option>Daisy</option>
-            <option>Tigger</option>
-            <option>Donald</option>
-            <option>Pooh</option>
-            <option>Custom character</option>
-          </select>
-        </label>
-
-        <label>
           Drawing Style
           <select name="style" required>
             <option value="">Choose one</option>
@@ -59,13 +46,8 @@
         </label>
 
         <label>
-          Pose / Expression
-          <input type="text" name="pose" placeholder="e.g. smiling + waving" required>
-        </label>
-
-        <label>
-          Delivery Format
-          <select name="format" required>
+          Delivery
+          <select name="delivery" required>
             <option value="">Choose one</option>
             <option>PNG (transparent)</option>
             <option>JPG</option>
@@ -80,8 +62,8 @@
         </label>
 
         <label>
-          Reference Link (Optional)
-          <input type="url" name="reference" placeholder="https://...">
+          Reference Photo
+          <input type="file" name="referencePhoto" accept="image/*" required>
         </label>
 
         <label>

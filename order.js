@@ -6,6 +6,7 @@
   const thanksModal = document.getElementById("orderThanksModal");
   const thanksClose = document.getElementById("orderThanksClose");
   const storageKey = "tsum_story_drawing_order";
+  const maxStoredPhotoBytes = 1400000;
 
   if (!form || !preview) {
     return;
@@ -42,6 +43,14 @@
     thanksModal.setAttribute("aria-hidden", "true");
   };
 
+  const readFileAsDataUrl = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(String(reader.result || ""));
+      reader.onerror = () => reject(new Error("Failed to read file"));
+      reader.readAsDataURL(file);
+    });
+
   const renderSavedOrder = () => {
     const raw = localStorage.getItem(storageKey);
     if (!raw) {
@@ -60,13 +69,18 @@
     }
 
     preview.classList.remove("empty");
+    const hasPhoto =
+      typeof saved.referencePhotoDataUrl === "string" &&
+      saved.referencePhotoDataUrl.startsWith("data:image/");
+    const photoHtml = hasPhoto
+      ? `<br>Reference Photo:<br><img class="order-photo-preview" src="${saved.referencePhotoDataUrl}" alt="${escapeHtml(saved.referencePhotoName || "Reference photo")}">`
+      : `<br>Reference Photo: ${escapeHtml(saved.referencePhotoName || "-")}`;
+
     preview.innerHTML = `
-      Character: ${escapeHtml(saved.character)}<br>
       Style: ${escapeHtml(saved.style)}<br>
-      Pose: ${escapeHtml(saved.pose)}<br>
-      Format: ${escapeHtml(saved.format)}<br>
+      Delivery: ${escapeHtml(saved.delivery)}<br>
       Due date: ${escapeHtml(saved.dueDate)}<br>
-      Reference: ${escapeHtml(saved.reference || "-")}<br>
+      ${photoHtml}<br>
       Notes: ${escapeHtml(saved.notes)}
     `;
   };
@@ -97,24 +111,50 @@
     }
   });
 
-  form.addEventListener("submit", (event) => {
+  form.addEventListener("submit", async (event) => {
     event.preventDefault();
 
     const data = new FormData(form);
+    const referencePhoto = data.get("referencePhoto");
+    const file =
+      referencePhoto instanceof File && referencePhoto.size > 0 ? referencePhoto : null;
+
+    let referencePhotoDataUrl = "";
+    let referencePhotoName = file ? file.name : "";
+    let storageMessage = "Drawing request saved.";
+
+    if (file && file.size <= maxStoredPhotoBytes && file.type.startsWith("image/")) {
+      try {
+        referencePhotoDataUrl = await readFileAsDataUrl(file);
+      } catch {
+        referencePhotoDataUrl = "";
+      }
+    } else if (file) {
+      storageMessage =
+        "Drawing request saved. Photo preview not stored because file is too large.";
+    }
+
     const payload = {
-      character: (data.get("character") || "").toString().trim(),
       style: (data.get("style") || "").toString().trim(),
-      pose: (data.get("pose") || "").toString().trim(),
-      format: (data.get("format") || "").toString().trim(),
+      delivery: (data.get("delivery") || "").toString().trim(),
       dueDate: (data.get("dueDate") || "").toString().trim(),
-      reference: (data.get("reference") || "").toString().trim(),
+      referencePhotoName,
+      referencePhotoDataUrl,
       notes: (data.get("notes") || "").toString().trim()
     };
 
-    localStorage.setItem(storageKey, JSON.stringify(payload));
+    try {
+      localStorage.setItem(storageKey, JSON.stringify(payload));
+    } catch {
+      payload.referencePhotoDataUrl = "";
+      localStorage.setItem(storageKey, JSON.stringify(payload));
+      storageMessage =
+        "Drawing request saved. Photo preview not stored because browser storage is full.";
+    }
+
     renderSavedOrder();
     form.reset();
-    setStatus("Drawing request saved.");
+    setStatus(storageMessage);
     openThanks();
   });
 
