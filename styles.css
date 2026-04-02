@@ -889,6 +889,28 @@ h2 {
   .site-header {
     border-radius: 18px;
   }
+
+  .hero {
+    padding: 18px;
+  }
+
+  .tsum-stack {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    justify-items: center;
+    align-items: end;
+    gap: 6px;
+  }
+
+  .tsum {
+    min-width: 0;
+  }
+
+  .tsum-photo {
+    width: clamp(72px, 25vw, 92px);
+    max-width: 100%;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
