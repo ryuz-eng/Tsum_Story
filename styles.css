@@ -25,7 +25,7 @@ body {
 body {
   min-height: 100vh;
   color: var(--ink);
-  font-family: "Nunito", "Trebuchet MS", sans-serif;
+  font-family: "Quicksand", "Trebuchet MS", sans-serif;
   background: #fffaf6;
   position: relative;
   overflow-x: hidden;
@@ -125,7 +125,7 @@ body {
 }
 
 .brand {
-  font-family: "Baloo 2", "Trebuchet MS", sans-serif;
+  font-family: "Varela Round", "Trebuchet MS", sans-serif;
   font-weight: 700;
   font-size: 1.4rem;
   color: #d05d16;
@@ -142,7 +142,7 @@ nav a {
   text-decoration: none;
   color: #704430;
   font-weight: 700;
-  font-family: "Baloo 2", "Trebuchet MS", sans-serif;
+  font-family: "Varela Round", "Trebuchet MS", sans-serif;
   padding: 8px 12px;
   border-radius: 999px;
   transition: 0.25s ease;
@@ -189,7 +189,7 @@ nav a[aria-current="page"] {
 
 h1,
 h2 {
-  font-family: "Baloo 2", "Trebuchet MS", sans-serif;
+  font-family: "Varela Round", "Trebuchet MS", sans-serif;
   line-height: 1.05;
   margin: 0 0 14px;
 }
@@ -223,7 +223,7 @@ h2 {
   border: none;
   cursor: pointer;
   padding: 11px 16px;
-  font-family: "Baloo 2", "Trebuchet MS", sans-serif;
+  font-family: "Varela Round", "Trebuchet MS", sans-serif;
   font-weight: 700;
   font-size: 1rem;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -326,6 +326,11 @@ h2 {
   color: var(--muted);
 }
 
+.reason-card.stack-in {
+  animation: stack-rise 0.55s cubic-bezier(0.22, 0.68, 0.22, 1) both;
+  animation-delay: var(--stack-delay, 0ms);
+}
+
 .replacement-card {
   position: relative;
   overflow: hidden;
@@ -333,14 +338,14 @@ h2 {
 }
 
 .replacement-card h3 {
-  font-family: "Baloo 2", "Trebuchet MS", sans-serif;
+  font-family: "Varela Round", "Trebuchet MS", sans-serif;
   font-size: 1.18rem;
   line-height: 1.2;
   margin: 0 0 12px 0;
 }
 
 .replacement-blurb {
-  font-family: "Baloo 2", "Trebuchet MS", sans-serif;
+  font-family: "Varela Round", "Trebuchet MS", sans-serif;
   font-weight: 700;
   font-size: clamp(1.18rem, 1.7vw, 1.6rem);
   line-height: 1.45;
@@ -400,7 +405,7 @@ h2 {
   color: #6f6a7c;
   border-radius: 999px;
   padding: 8px 12px;
-  font-family: "Baloo 2", "Trebuchet MS", sans-serif;
+  font-family: "Varela Round", "Trebuchet MS", sans-serif;
   font-size: 0.95rem;
   font-weight: 700;
   cursor: pointer;
@@ -447,12 +452,12 @@ h2 {
 
 .stay-card h3 {
   margin: 0 0 10px;
-  font-family: "Baloo 2", "Trebuchet MS", sans-serif;
+  font-family: "Varela Round", "Trebuchet MS", sans-serif;
   font-size: 1.18rem;
 }
 
 .stay-card p {
-  font-family: "Baloo 2", "Trebuchet MS", sans-serif;
+  font-family: "Varela Round", "Trebuchet MS", sans-serif;
   font-weight: 700;
   font-size: 1.15rem;
   line-height: 1.45;
@@ -603,7 +608,7 @@ h2 {
 .rating-selected {
   margin: 8px 2px 2px;
   color: #5c4a3f;
-  font-family: "Baloo 2", "Trebuchet MS", sans-serif;
+  font-family: "Varela Round", "Trebuchet MS", sans-serif;
   font-weight: 700;
 }
 
@@ -754,6 +759,17 @@ h2 {
   }
 }
 
+@keyframes stack-rise {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 @media (max-width: 900px) {
   .tsum-band {
     height: 94px;
@@ -772,5 +788,11 @@ h2 {
 
   .site-header {
     border-radius: 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reason-card.stack-in {
+    animation: none;
   }
 }

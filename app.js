@@ -121,6 +121,36 @@
     });
   };
 
+  const initReasonsStack = () => {
+    const trigger = document.getElementById("seeReasonsBtn");
+    const reasonsSection = document.getElementById("reasons");
+    if (!trigger || !reasonsSection) {
+      return;
+    }
+
+    const reasonCards = Array.from(reasonsSection.querySelectorAll(".reason-card"));
+    if (!reasonCards.length) {
+      return;
+    }
+
+    const playStackAnimation = () => {
+      reasonCards.forEach((card, index) => {
+        card.classList.remove("stack-in");
+        card.style.setProperty("--stack-delay", `${index * 130}ms`);
+      });
+
+      window.requestAnimationFrame(() => {
+        reasonCards.forEach((card) => card.classList.add("stack-in"));
+      });
+    };
+
+    trigger.addEventListener("click", (event) => {
+      event.preventDefault();
+      reasonsSection.scrollIntoView({ behavior: "smooth", block: "start" });
+      window.setTimeout(playStackAnimation, 220);
+    });
+  };
+
   const initCardSounds = () => {
     const soundButtons = document.querySelectorAll(".sound-btn");
     if (!soundButtons.length) {
@@ -441,6 +471,7 @@
   renderSavedPlan();
   initTsumBackground();
   initBlurPhrases();
+  initReasonsStack();
   initCardSounds();
   initRatingTheme();
   initLowRatingFeedback();
