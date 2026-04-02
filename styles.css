@@ -415,7 +415,13 @@ h2 {
   line-height: inherit;
   color: inherit;
   padding: 0 2px;
-  filter: blur(6px);
+  filter: blur(10px);
+  opacity: 0.95;
+  letter-spacing: 0.08em;
+  text-shadow: 0 0 9px rgba(111, 106, 124, 0.8);
+  user-select: none;
+  -webkit-user-select: none;
+  pointer-events: none;
 }
 
 .card-corner-tsum {
