@@ -331,41 +331,20 @@ h2 {
   animation-delay: var(--stack-delay, 0ms);
 }
 
-#reasons.collapsed .replacement-card {
+.replacement-card.is-collapsed {
   padding: 16px 18px;
   min-height: 0;
   cursor: pointer;
 }
 
-#reasons.collapsed .replacement-card h3 {
+.replacement-card.is-collapsed h3 {
   margin: 0;
 }
 
-#reasons.collapsed .replacement-blurb,
-#reasons.collapsed .sound-row,
-#reasons.collapsed .card-corner-tsum {
+.replacement-card.is-collapsed .replacement-blurb,
+.replacement-card.is-collapsed .sound-row,
+.replacement-card.is-collapsed .card-corner-tsum {
   display: none;
-}
-
-#reasons.collapsed .replacement-card.show-content {
-  padding: 18px 18px 86px 18px;
-  cursor: default;
-}
-
-#reasons.collapsed .replacement-card.show-content h3 {
-  margin: 0 0 12px 0;
-}
-
-#reasons.collapsed .replacement-card.show-content .replacement-blurb {
-  display: block;
-}
-
-#reasons.collapsed .replacement-card.show-content .sound-row {
-  display: flex;
-}
-
-#reasons.collapsed .replacement-card.show-content .card-corner-tsum {
-  display: block;
 }
 
 .replacement-card {

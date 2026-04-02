@@ -131,48 +131,46 @@
     if (!reasonCards.length) {
       return;
     }
-    let isExpanding = false;
+    const collapseCard = (card) => {
+      card.classList.add("is-collapsed");
+      card.classList.remove("stack-in");
+      card.setAttribute("aria-expanded", "false");
+    };
 
-    const expandReasons = () => {
-      if (!reasonsSection.classList.contains("collapsed") || isExpanding) {
+    const expandCard = (card) => {
+      card.classList.remove("is-collapsed");
+      card.classList.remove("stack-in");
+      card.setAttribute("aria-expanded", "true");
+      window.requestAnimationFrame(() => {
+        card.classList.add("stack-in");
+      });
+    };
+
+    const activateCard = (card) => {
+      if (!card.classList.contains("is-collapsed")) {
         return;
       }
-      isExpanding = true;
-      const stepMs = 170;
-      const settleMs = 640;
 
-      reasonCards.forEach((card) => {
-        card.classList.remove("stack-in", "show-content");
+      reasonCards.forEach((otherCard) => {
+        if (otherCard !== card) {
+          collapseCard(otherCard);
+        }
       });
-
-      reasonCards.forEach((card, index) => {
-        window.setTimeout(() => {
-          card.classList.add("show-content");
-          card.classList.remove("stack-in");
-          window.requestAnimationFrame(() => {
-            card.classList.add("stack-in");
-          });
-        }, index * stepMs);
-      });
-
-      const totalMs = reasonCards.length * stepMs + settleMs;
-      window.setTimeout(() => {
-        reasonsSection.classList.remove("collapsed");
-        reasonCards.forEach((card) => card.classList.remove("show-content"));
-        isExpanding = false;
-      }, totalMs);
+      expandCard(card);
     };
 
     reasonCards.forEach((card) => {
       card.tabIndex = 0;
       card.setAttribute("role", "button");
-      card.addEventListener("click", expandReasons);
+      collapseCard(card);
+
+      card.addEventListener("click", () => activateCard(card));
       card.addEventListener("keydown", (event) => {
         if (event.key !== "Enter" && event.key !== " ") {
           return;
         }
         event.preventDefault();
-        expandReasons();
+        activateCard(card);
       });
     });
   };
