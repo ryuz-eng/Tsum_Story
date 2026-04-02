@@ -338,13 +338,6 @@
       ratingRoot.querySelectorAll('input[name="rating"][data-score]')
     );
     const selectedText = document.getElementById("ratingSelected");
-    const ratingTextByScore = {
-      1: "1/5 Fuck Off",
-      2: "2/5 Ew",
-      3: "3/5 Good",
-      4: "4/5 Fun",
-      5: "5/5 Marry Me"
-    };
 
     const render = (score) => {
       const safeScore = Math.max(0, Math.min(5, score));
@@ -361,9 +354,19 @@
       });
 
       if (selectedText) {
-        selectedText.textContent = safeScore
-          ? ratingTextByScore[safeScore]
-          : "Tap a Totoro to choose your vibe.";
+        if (!safeScore) {
+          selectedText.textContent = "Tap a Totoro to choose your vibe.";
+          return;
+        }
+
+        const selectedInput = ratingInputs.find((input) => {
+          const inputScore = Number.parseInt(input.getAttribute("data-score") || "0", 10);
+          return Number.isFinite(inputScore) && inputScore === safeScore;
+        });
+
+        selectedText.textContent = selectedInput
+          ? selectedInput.value
+          : `${safeScore}/5`;
       }
     };
 
