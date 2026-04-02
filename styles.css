@@ -331,6 +331,21 @@ h2 {
   animation-delay: var(--stack-delay, 0ms);
 }
 
+#reasons.collapsed .replacement-card {
+  padding: 16px 18px;
+  min-height: 0;
+}
+
+#reasons.collapsed .replacement-card h3 {
+  margin: 0;
+}
+
+#reasons.collapsed .replacement-blurb,
+#reasons.collapsed .sound-row,
+#reasons.collapsed .card-corner-tsum {
+  display: none;
+}
+
 .replacement-card {
   position: relative;
   overflow: hidden;

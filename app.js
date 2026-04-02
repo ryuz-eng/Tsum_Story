@@ -133,6 +133,15 @@
       return;
     }
 
+    const setCollapsed = (collapsed) => {
+      reasonsSection.classList.toggle("collapsed", collapsed);
+      trigger.textContent = collapsed ? "See My Reasons" : "Hide My Reasons";
+      trigger.setAttribute("aria-expanded", String(!collapsed));
+      if (collapsed) {
+        reasonCards.forEach((card) => card.classList.remove("stack-in"));
+      }
+    };
+
     const playStackAnimation = () => {
       reasonCards.forEach((card, index) => {
         card.classList.remove("stack-in");
@@ -146,9 +155,15 @@
 
     trigger.addEventListener("click", (event) => {
       event.preventDefault();
+      const shouldExpand = reasonsSection.classList.contains("collapsed");
+      setCollapsed(!shouldExpand);
       reasonsSection.scrollIntoView({ behavior: "smooth", block: "start" });
-      window.setTimeout(playStackAnimation, 220);
+      if (shouldExpand) {
+        window.setTimeout(playStackAnimation, 220);
+      }
     });
+
+    setCollapsed(reasonsSection.classList.contains("collapsed"));
   };
 
   const initCardSounds = () => {
