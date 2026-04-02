@@ -426,6 +426,44 @@ h2 {
   user-select: none;
 }
 
+.stay-section {
+  margin-top: 24px;
+}
+
+.stay-lead {
+  margin-bottom: 16px;
+}
+
+.stay-grid {
+  margin-top: 0;
+}
+
+.stay-card {
+  position: relative;
+  overflow: hidden;
+  padding: 18px 18px 82px;
+  background: linear-gradient(180deg, #fffefb 0%, #fff7ee 100%);
+}
+
+.stay-card h3 {
+  margin: 0 0 10px;
+  font-family: "Baloo 2", "Trebuchet MS", sans-serif;
+  font-size: 1.18rem;
+}
+
+.stay-card p {
+  font-family: "Baloo 2", "Trebuchet MS", sans-serif;
+  font-weight: 700;
+  font-size: 1.15rem;
+  line-height: 1.45;
+  color: #6f6a7c;
+}
+
+.stay-corner-tsum {
+  width: 56px;
+  height: 56px;
+}
+
 .timeline-list {
   display: grid;
   gap: 14px;
