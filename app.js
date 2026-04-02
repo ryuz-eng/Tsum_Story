@@ -122,25 +122,15 @@
   };
 
   const initReasonsStack = () => {
-    const trigger = document.getElementById("seeReasonsBtn");
     const reasonsSection = document.getElementById("reasons");
-    if (!trigger || !reasonsSection) {
+    if (!reasonsSection) {
       return;
     }
 
-    const reasonCards = Array.from(reasonsSection.querySelectorAll(".reason-card"));
+    const reasonCards = Array.from(reasonsSection.querySelectorAll(".replacement-card"));
     if (!reasonCards.length) {
       return;
     }
-
-    const setCollapsed = (collapsed) => {
-      reasonsSection.classList.toggle("collapsed", collapsed);
-      trigger.textContent = collapsed ? "See My Reasons" : "Hide My Reasons";
-      trigger.setAttribute("aria-expanded", String(!collapsed));
-      if (collapsed) {
-        reasonCards.forEach((card) => card.classList.remove("stack-in"));
-      }
-    };
 
     const playStackAnimation = () => {
       reasonCards.forEach((card, index) => {
@@ -153,17 +143,26 @@
       });
     };
 
-    trigger.addEventListener("click", (event) => {
-      event.preventDefault();
-      const shouldExpand = reasonsSection.classList.contains("collapsed");
-      setCollapsed(!shouldExpand);
-      reasonsSection.scrollIntoView({ behavior: "smooth", block: "start" });
-      if (shouldExpand) {
-        window.setTimeout(playStackAnimation, 220);
+    const expandReasons = () => {
+      if (!reasonsSection.classList.contains("collapsed")) {
+        return;
       }
-    });
+      reasonsSection.classList.remove("collapsed");
+      window.setTimeout(playStackAnimation, 70);
+    };
 
-    setCollapsed(reasonsSection.classList.contains("collapsed"));
+    reasonCards.forEach((card) => {
+      card.tabIndex = 0;
+      card.setAttribute("role", "button");
+      card.addEventListener("click", expandReasons);
+      card.addEventListener("keydown", (event) => {
+        if (event.key !== "Enter" && event.key !== " ") {
+          return;
+        }
+        event.preventDefault();
+        expandReasons();
+      });
+    });
   };
 
   const initCardSounds = () => {

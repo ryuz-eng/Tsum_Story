@@ -334,6 +334,7 @@ h2 {
 #reasons.collapsed .replacement-card {
   padding: 16px 18px;
   min-height: 0;
+  cursor: pointer;
 }
 
 #reasons.collapsed .replacement-card h3 {
