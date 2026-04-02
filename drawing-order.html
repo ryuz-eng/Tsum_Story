@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tsum Story | Drawing Order Form</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&family=Varela+Round&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="order-page">
+  <div class="tsum-band top" id="bandTop"></div>
+  <div class="tsum-band bottom" id="bandBottom"></div>
+  <div class="tsum-sparks" id="tsumSparks"></div>
+
+  <div class="bg-shape bg-shape-a"></div>
+  <div class="bg-shape bg-shape-b"></div>
+  <div class="bg-shape bg-shape-c"></div>
+
+  <header class="site-header">
+    <a class="brand" href="index.html">Tsum Story</a>
+    <nav>
+      <a href="index.html">Why You're My Type</a>
+      <a href="drawing-order.html" aria-current="page">Drawing Order Form</a>
+      <a href="review.html">Review & Next Meeting</a>
+    </nav>
+  </header>
+
+  <main class="container two-col">
+    <section class="panel reveal">
+      <p class="eyebrow">Drawing Request</p>
+      <h1>Drawing Order Form</h1>
+      <p class="lead">Tell me what you want and I will queue your drawing request.</p>
+
+      <form id="drawOrderForm" class="review-form order-form">
+        <label>
+          Main Character
+          <select name="character" required>
+            <option value="">Choose one</option>
+            <option>Minnie</option>
+            <option>Daisy</option>
+            <option>Tigger</option>
+            <option>Donald</option>
+            <option>Pooh</option>
+            <option>Custom character</option>
+          </select>
+        </label>
+
+        <label>
+          Drawing Style
+          <select name="style" required>
+            <option value="">Choose one</option>
+            <option>Tsum Tsum style</option>
+            <option>Chibi style</option>
+            <option>Soft pastel style</option>
+            <option>Sticker pack style</option>
+          </select>
+        </label>
+
+        <label>
+          Pose / Expression
+          <input type="text" name="pose" placeholder="e.g. smiling + waving" required>
+        </label>
+
+        <label>
+          Delivery Format
+          <select name="format" required>
+            <option value="">Choose one</option>
+            <option>PNG (transparent)</option>
+            <option>JPG</option>
+            <option>Sticker sheet</option>
+            <option>Wallpaper (mobile)</option>
+          </select>
+        </label>
+
+        <label>
+          Due Date
+          <input type="date" name="dueDate" id="orderDueDate" required>
+        </label>
+
+        <label>
+          Reference Link (Optional)
+          <input type="url" name="reference" placeholder="https://...">
+        </label>
+
+        <label>
+          Notes
+          <textarea name="notes" rows="3" placeholder="Anything special you want in the drawing?" required></textarea>
+        </label>
+
+        <button class="btn btn-primary" type="submit">Save Drawing Request</button>
+        <p id="orderNotifyStatus" class="notify-status" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <aside class="panel preview reveal">
+      <h2>Saved Drawing Request</h2>
+      <p class="muted">Your latest drawing order appears here.</p>
+      <div id="orderPreview" class="preview-card empty">
+        No drawing request saved yet.
+      </div>
+      <a class="btn btn-ghost back-link" href="index.html">Back To Main Page</a>
+    </aside>
+  </main>
+
+  <div id="orderThanksModal" class="thanks-modal" aria-hidden="true">
+    <div class="thanks-modal-card" role="dialog" aria-modal="true" aria-labelledby="orderThanksTitle">
+      <h2 id="orderThanksTitle">Thankiew Tan Hui Xuan / Wifey / 老婆</h2>
+      <p class="muted">Drawing request received.</p>
+      <img src="assets/giphy.gif" class="thanks-gif" alt="Cute thank you gif">
+      <div class="thanks-actions">
+        <button class="btn btn-primary" type="button" id="orderThanksClose">Aww Okay</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <p>Tsum stack grows one drawing at a time.</p>
+  </footer>
+
+  <script src="app.js"></script>
+  <script src="order.js"></script>
+</body>
+</html>
