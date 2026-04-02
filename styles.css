@@ -313,6 +313,10 @@ h2 {
   gap: 14px;
 }
 
+#reasons {
+  align-items: start;
+}
+
 .reason-card {
   background: #fffdf9;
   border: 1px solid rgba(250, 185, 136, 0.5);
