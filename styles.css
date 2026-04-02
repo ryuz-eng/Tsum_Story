@@ -335,6 +335,13 @@ h2 {
   animation-delay: var(--stack-delay, 0ms);
 }
 
+.replacement-card {
+  position: relative;
+  overflow: hidden;
+  padding: 18px 18px 86px 18px;
+  transition: padding 0.38s cubic-bezier(0.22, 0.7, 0.22, 1);
+}
+
 .replacement-card.is-collapsed {
   padding: 16px 18px;
   min-height: 0;
@@ -345,16 +352,45 @@ h2 {
   margin: 0;
 }
 
-.replacement-card.is-collapsed .replacement-blurb,
-.replacement-card.is-collapsed .sound-row,
-.replacement-card.is-collapsed .card-corner-tsum {
-  display: none;
+.replacement-card .replacement-blurb {
+  max-height: 620px;
+  opacity: 1;
+  transform: translateY(0);
+  overflow: hidden;
+  transition: max-height 0.48s cubic-bezier(0.22, 0.7, 0.22, 1),
+    opacity 0.28s ease,
+    transform 0.48s cubic-bezier(0.22, 0.7, 0.22, 1);
 }
 
-.replacement-card {
-  position: relative;
+.replacement-card .sound-row {
+  max-height: 120px;
+  opacity: 1;
+  transform: translateY(0);
   overflow: hidden;
-  padding: 18px 18px 86px 18px;
+  transition: max-height 0.42s cubic-bezier(0.22, 0.7, 0.22, 1),
+    margin-top 0.26s ease,
+    opacity 0.26s ease,
+    transform 0.42s cubic-bezier(0.22, 0.7, 0.22, 1);
+}
+
+.replacement-card.is-collapsed .replacement-blurb {
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-8px);
+}
+
+.replacement-card.is-collapsed .sound-row {
+  max-height: 0;
+  margin-top: 0;
+  opacity: 0;
+  transform: translateY(-8px);
+  pointer-events: none;
+}
+
+.replacement-card.is-collapsed .card-corner-tsum {
+  opacity: 0;
+  transform: rotate(-8deg) translateY(8px);
+  pointer-events: none;
 }
 
 .replacement-card h3 {
@@ -409,7 +445,9 @@ h2 {
   height: 58px;
   object-fit: contain;
   filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.14));
-  transform: rotate(-8deg);
+  transform: rotate(-8deg) translateY(0);
+  opacity: 1;
+  transition: transform 0.42s cubic-bezier(0.22, 0.7, 0.22, 1), opacity 0.26s ease;
 }
 
 .sound-row {
@@ -781,8 +819,8 @@ h2 {
 
 @keyframes stack-rise {
   from {
-    opacity: 0;
-    transform: translateY(24px) scale(0.97);
+    opacity: 0.35;
+    transform: translateY(14px) scale(0.985);
   }
   to {
     opacity: 1;
@@ -814,5 +852,12 @@ h2 {
 @media (prefers-reduced-motion: reduce) {
   .reason-card.stack-in {
     animation: none;
+  }
+
+  .replacement-card,
+  .replacement-card .replacement-blurb,
+  .replacement-card .sound-row,
+  .card-corner-tsum {
+    transition: none;
   }
 }

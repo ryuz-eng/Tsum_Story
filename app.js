@@ -150,12 +150,6 @@
       if (!card.classList.contains("is-collapsed")) {
         return;
       }
-
-      reasonCards.forEach((otherCard) => {
-        if (otherCard !== card) {
-          collapseCard(otherCard);
-        }
-      });
       expandCard(card);
     };
 
