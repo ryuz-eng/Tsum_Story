@@ -9,7 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700&family=Nunito:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
-<body class="review-page">
+<body class="review-page" data-telegram-endpoint="">
   <div class="tsum-band top" id="bandTop"></div>
   <div class="tsum-band bottom" id="bandBottom"></div>
   <div class="tsum-sparks" id="tsumSparks"></div>
@@ -93,6 +93,7 @@
         </label>
 
         <button class="btn btn-primary" type="submit">Save Review & Plan</button>
+        <p id="notifyStatus" class="notify-status" aria-live="polite"></p>
       </form>
     </section>
 

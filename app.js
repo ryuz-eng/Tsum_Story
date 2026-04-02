@@ -7,6 +7,7 @@
   const improveTextarea = document.getElementById("improveTextarea");
   const improveSaveButton = document.getElementById("improveSave");
   const improveCancelButton = document.getElementById("improveCancel");
+  const notifyStatus = document.getElementById("notifyStatus");
   const storageKey = "tsum_story_review";
 
   const escapeHtml = (value) =>
@@ -20,6 +21,7 @@
   const rand = (min, max) => Math.random() * (max - min) + min;
   const isLowRatingValue = (value) =>
     value.startsWith("1/5") || value.startsWith("2/5");
+  const telegramNotifyTimeoutMs = 9000;
 
   let showImproveModal = null;
 
@@ -222,6 +224,49 @@
     `;
   };
 
+  const readTelegramEndpoint = () => {
+    const endpoint = (document.body?.dataset.telegramEndpoint || "").trim();
+    return endpoint;
+  };
+
+  const setNotifyStatus = (message, state = "idle") => {
+    if (!notifyStatus) {
+      return;
+    }
+    notifyStatus.textContent = message;
+    notifyStatus.dataset.state = state;
+  };
+
+  const sendTelegramNotification = async (payload) => {
+    const endpoint = readTelegramEndpoint();
+    if (!endpoint) {
+      return { status: "skipped" };
+    }
+
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => controller.abort(), telegramNotifyTimeoutMs);
+    try {
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          source: "tsum-story-web",
+          submittedAt: new Date().toISOString(),
+          review: payload
+        }),
+        signal: controller.signal
+      });
+      if (!response.ok) {
+        return { status: "failed", code: response.status };
+      }
+      return { status: "sent" };
+    } catch {
+      return { status: "failed", code: "network" };
+    } finally {
+      window.clearTimeout(timeout);
+    }
+  };
+
   const initLowRatingFeedback = () => {
     if (
       !form ||
@@ -345,7 +390,7 @@
     renderFromSelection();
   };
   if (form) {
-    form.addEventListener("submit", (event) => {
+    form.addEventListener("submit", async (event) => {
       event.preventDefault();
 
       const data = new FormData(form);
@@ -374,6 +419,19 @@
       localStorage.setItem(storageKey, JSON.stringify(payload));
       renderSavedPlan();
       form.reset();
+
+      setNotifyStatus("Saved locally. Sending Telegram notification...", "idle");
+      const notifyResult = await sendTelegramNotification(payload);
+      if (notifyResult.status === "sent") {
+        setNotifyStatus("Saved and sent to Telegram.", "ok");
+      } else if (notifyResult.status === "skipped") {
+        setNotifyStatus("Saved locally. Telegram is not connected yet.", "warn");
+      } else {
+        setNotifyStatus(
+          "Saved locally. Telegram send failed (you can reconnect endpoint).",
+          "warn"
+        );
+      }
     });
   }
 
