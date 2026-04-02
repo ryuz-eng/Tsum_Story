@@ -131,24 +131,36 @@
     if (!reasonCards.length) {
       return;
     }
-
-    const playStackAnimation = () => {
-      reasonCards.forEach((card, index) => {
-        card.classList.remove("stack-in");
-        card.style.setProperty("--stack-delay", `${index * 130}ms`);
-      });
-
-      window.requestAnimationFrame(() => {
-        reasonCards.forEach((card) => card.classList.add("stack-in"));
-      });
-    };
+    let isExpanding = false;
 
     const expandReasons = () => {
-      if (!reasonsSection.classList.contains("collapsed")) {
+      if (!reasonsSection.classList.contains("collapsed") || isExpanding) {
         return;
       }
-      reasonsSection.classList.remove("collapsed");
-      window.setTimeout(playStackAnimation, 70);
+      isExpanding = true;
+      const stepMs = 170;
+      const settleMs = 640;
+
+      reasonCards.forEach((card) => {
+        card.classList.remove("stack-in", "show-content");
+      });
+
+      reasonCards.forEach((card, index) => {
+        window.setTimeout(() => {
+          card.classList.add("show-content");
+          card.classList.remove("stack-in");
+          window.requestAnimationFrame(() => {
+            card.classList.add("stack-in");
+          });
+        }, index * stepMs);
+      });
+
+      const totalMs = reasonCards.length * stepMs + settleMs;
+      window.setTimeout(() => {
+        reasonsSection.classList.remove("collapsed");
+        reasonCards.forEach((card) => card.classList.remove("show-content"));
+        isExpanding = false;
+      }, totalMs);
     };
 
     reasonCards.forEach((card) => {

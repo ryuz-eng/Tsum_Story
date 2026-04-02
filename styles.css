@@ -347,6 +347,27 @@ h2 {
   display: none;
 }
 
+#reasons.collapsed .replacement-card.show-content {
+  padding: 18px 18px 86px 18px;
+  cursor: default;
+}
+
+#reasons.collapsed .replacement-card.show-content h3 {
+  margin: 0 0 12px 0;
+}
+
+#reasons.collapsed .replacement-card.show-content .replacement-blurb {
+  display: block;
+}
+
+#reasons.collapsed .replacement-card.show-content .sound-row {
+  display: flex;
+}
+
+#reasons.collapsed .replacement-card.show-content .card-corner-tsum {
+  display: block;
+}
+
 .replacement-card {
   position: relative;
   overflow: hidden;
