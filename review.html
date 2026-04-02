@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tsum Story | Review & Next Meeting</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700&family=Nunito:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="review-page">
+  <div class="tsum-band top" id="bandTop"></div>
+  <div class="tsum-band bottom" id="bandBottom"></div>
+  <div class="tsum-sparks" id="tsumSparks"></div>
+
+  <div class="bg-shape bg-shape-a"></div>
+  <div class="bg-shape bg-shape-b"></div>
+  <div class="bg-shape bg-shape-c"></div>
+
+  <header class="site-header">
+    <a class="brand" href="index.html">Tsum Story</a>
+    <nav>
+      <a href="index.html">Why You're My Type</a>
+      <a href="review.html" aria-current="page">Review & Next Meeting</a>
+    </nav>
+  </header>
+
+  <main class="container two-col">
+    <section class="panel reveal">
+      <p class="eyebrow">Review</p>
+      <h1>How Was Our Last Meeting?</h1>
+      <p class="lead">Drop your review and let's set our next meetie!</p>
+
+      <form id="reviewForm" class="review-form">
+        <fieldset class="rating-group">
+          <legend>Rate The Vibe</legend>
+          <div class="totoro-rating" id="totoroRating" role="radiogroup" aria-label="Rate The Vibe">
+            <label class="totoro-choice">
+              <input type="radio" name="rating" value="1/5 Please Improve" data-score="1" required>
+              <img src="assets/pattern/totoro-rating.png" class="rating-icon-image off" alt="1 out of 5">
+            </label>
+            <label class="totoro-choice">
+              <input type="radio" name="rating" value="2/5 Needs Work" data-score="2">
+              <img src="assets/pattern/totoro-rating.png" class="rating-icon-image off" alt="2 out of 5">
+            </label>
+            <label class="totoro-choice">
+              <input type="radio" name="rating" value="3/5 Good Energy" data-score="3">
+              <img src="assets/pattern/totoro-rating.png" class="rating-icon-image off" alt="3 out of 5">
+            </label>
+            <label class="totoro-choice">
+              <input type="radio" name="rating" value="4/5 Super Cute" data-score="4">
+              <img src="assets/pattern/totoro-rating.png" class="rating-icon-image off" alt="4 out of 5">
+            </label>
+            <label class="totoro-choice">
+              <input type="radio" name="rating" value="5/5 Sparkles" data-score="5">
+              <img src="assets/pattern/totoro-rating.png" class="rating-icon-image off" alt="5 out of 5">
+            </label>
+          </div>
+          <p class="rating-selected" id="ratingSelected">Tap a Totoro to choose your vibe.</p>
+        </fieldset>
+        <input type="hidden" name="improve" id="improveField" value="">
+
+        <label>
+          Favorite Part
+          <textarea name="favorite" rows="3" placeholder="What stood out the most?" required></textarea>
+        </label>
+
+        <label>
+          Next Meeting Date
+          <input type="date" name="date" id="meetingDate" required>
+        </label>
+
+        <label>
+          Next Meeting Time
+          <input type="time" name="time" required>
+        </label>
+
+        <label>
+          Meeting Vibe
+          <select name="vibe" required>
+            <option value="">Choose one</option>
+            <option>Cozy cafe + talk</option>
+            <option>Walk + snack hunt</option>
+            <option>Movie + dessert</option>
+            <option>Tsum shopping mission</option>
+          </select>
+        </label>
+
+        <label>
+          Location Idea
+          <input type="text" name="location" placeholder="Name a place" required>
+        </label>
+
+        <button class="btn btn-primary" type="submit">Save Review & Plan</button>
+      </form>
+    </section>
+
+    <aside class="panel preview reveal">
+      <h2>Saved Plan</h2>
+      <p class="muted">Your latest submission appears here.</p>
+      <div id="planPreview" class="preview-card empty">
+        No review saved yet.
+      </div>
+      <a class="btn btn-ghost back-link" href="index.html">Back To Main Page</a>
+    </aside>
+  </main>
+
+  <div id="improveModal" class="improve-modal" aria-hidden="true">
+    <div class="improve-modal-card" role="dialog" aria-modal="true" aria-labelledby="improveTitle">
+      <h2 id="improveTitle">How Can I Improve?</h2>
+      <p class="muted">You selected a low rating. Tell me what to improve for next time.</p>
+      <textarea id="improveTextarea" rows="4" placeholder="Type your feedback here..."></textarea>
+      <div class="improve-actions">
+        <button class="btn btn-ghost" type="button" id="improveCancel">Cancel</button>
+        <button class="btn btn-primary" type="button" id="improveSave">Save Feedback</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <p>Tsum stack grows one meeting at a time.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
