@@ -7,6 +7,8 @@
   const improveTextarea = document.getElementById("improveTextarea");
   const improveSaveButton = document.getElementById("improveSave");
   const improveCancelButton = document.getElementById("improveCancel");
+  const thanksModal = document.getElementById("thanksModal");
+  const thanksCloseButton = document.getElementById("thanksClose");
   const notifyStatus = document.getElementById("notifyStatus");
   const storageKey = "tsum_story_review";
 
@@ -300,6 +302,39 @@
     }
   };
 
+  const initThanksModal = () => {
+    if (!thanksModal || !thanksCloseButton) {
+      return {
+        open: () => {}
+      };
+    }
+
+    const close = () => {
+      thanksModal.classList.remove("open");
+      thanksModal.setAttribute("aria-hidden", "true");
+    };
+
+    const open = () => {
+      thanksModal.classList.add("open");
+      thanksModal.setAttribute("aria-hidden", "false");
+    };
+
+    thanksCloseButton.addEventListener("click", close);
+    thanksModal.addEventListener("click", (event) => {
+      if (event.target === thanksModal) {
+        close();
+      }
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && thanksModal.classList.contains("open")) {
+        close();
+      }
+    });
+
+    return { open };
+  };
+
   const initLowRatingFeedback = () => {
     if (
       !form ||
@@ -425,6 +460,7 @@
 
     renderFromSelection();
   };
+  const thanksModalControl = initThanksModal();
   if (form) {
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
@@ -455,6 +491,7 @@
       localStorage.setItem(storageKey, JSON.stringify(payload));
       renderSavedPlan();
       form.reset();
+      thanksModalControl.open();
 
       setNotifyStatus("Saved locally. Sending Telegram notification...", "idle");
       const notifyResult = await sendTelegramNotification(payload);
