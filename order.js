@@ -7,6 +7,7 @@
   const thanksClose = document.getElementById("orderThanksClose");
   const storageKey = "tsum_story_drawing_order";
   const maxStoredPhotoBytes = 1400000;
+  const telegramNotifyTimeoutMs = 9000;
 
   if (!form || !preview) {
     return;
@@ -25,6 +26,46 @@
       return;
     }
     notifyStatus.textContent = message;
+  };
+
+  const readTelegramEndpoint = () =>
+    String(document.body?.dataset.telegramEndpoint || "").trim();
+
+  const sendTelegramNotification = async (orderPayload) => {
+    const endpoint = readTelegramEndpoint();
+    if (!endpoint) {
+      return { status: "skipped" };
+    }
+
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => controller.abort(), telegramNotifyTimeoutMs);
+    try {
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          source: "tsum-story-order",
+          submittedAt: new Date().toISOString(),
+          order: {
+            style: orderPayload.style,
+            delivery: orderPayload.delivery,
+            dueDate: orderPayload.dueDate,
+            referencePhotoName: orderPayload.referencePhotoName,
+            notes: orderPayload.notes
+          }
+        }),
+        signal: controller.signal
+      });
+
+      if (!response.ok) {
+        return { status: "failed", code: response.status };
+      }
+      return { status: "sent" };
+    } catch {
+      return { status: "failed", code: "network" };
+    } finally {
+      window.clearTimeout(timeout);
+    }
   };
 
   const openThanks = () => {
@@ -154,8 +195,17 @@
 
     renderSavedOrder();
     form.reset();
-    setStatus(storageMessage);
     openThanks();
+
+    setStatus(`${storageMessage} Sending Telegram notification...`);
+    const notifyResult = await sendTelegramNotification(payload);
+    if (notifyResult.status === "sent") {
+      setStatus(`${storageMessage} Sent to Telegram.`);
+    } else if (notifyResult.status === "skipped") {
+      setStatus(`${storageMessage} Telegram is not connected yet.`);
+    } else {
+      setStatus(`${storageMessage} Telegram send failed.`);
+    }
   });
 
   renderSavedOrder();

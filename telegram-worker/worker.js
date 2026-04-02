@@ -35,7 +35,7 @@ const resolveOrigin = (request, env) => {
   return { allowed: false, allowOrigin: configured };
 };
 
-const formatMessage = (data) => {
+const formatReviewMessage = (data) => {
   const review = data?.review || {};
   const source = cleanText(data?.source, 80);
   const submittedAt = cleanText(data?.submittedAt, 80);
@@ -60,6 +60,36 @@ const formatMessage = (data) => {
     `Location: ${location}`,
     `Improve: ${improve}`
   ].join("\n");
+};
+
+const formatOrderMessage = (data) => {
+  const order = data?.order || {};
+  const source = cleanText(data?.source, 80);
+  const submittedAt = cleanText(data?.submittedAt, 80);
+  const style = cleanText(order.style, 120);
+  const delivery = cleanText(order.delivery, 80);
+  const dueDate = cleanText(order.dueDate, 80);
+  const referencePhotoName = cleanText(order.referencePhotoName, 220);
+  const notes = cleanText(order.notes, 500);
+
+  return [
+    "New Drawing Order",
+    `Source: ${source}`,
+    `Time: ${submittedAt}`,
+    "",
+    `Style: ${style}`,
+    `Delivery: ${delivery}`,
+    `Due Date: ${dueDate}`,
+    `Reference Photo: ${referencePhotoName}`,
+    `Notes: ${notes}`
+  ].join("\n");
+};
+
+const formatMessage = (data) => {
+  if (data?.order) {
+    return formatOrderMessage(data);
+  }
+  return formatReviewMessage(data);
 };
 
 export default {
