@@ -339,11 +339,11 @@
     );
     const selectedText = document.getElementById("ratingSelected");
     const ratingTextByScore = {
-      1: "1/5 Please Improve",
-      2: "2/5 Needs Work",
-      3: "3/5 Good Energy",
-      4: "4/5 Super Cute",
-      5: "5/5 Sparkles"
+      1: "1/5 Fuck Off",
+      2: "2/5 Ew",
+      3: "3/5 Good",
+      4: "4/5 Fun",
+      5: "5/5 Marry Me"
     };
 
     const render = (score) => {
