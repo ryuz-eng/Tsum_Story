@@ -106,21 +106,6 @@
     window.addEventListener("resize", render);
   };
 
-  const initBlurPhrases = () => {
-    const blurPhrases = document.querySelectorAll(".blur-phrase");
-    if (!blurPhrases.length) {
-      return;
-    }
-
-    blurPhrases.forEach((phraseButton) => {
-      phraseButton.addEventListener("click", () => {
-        const revealed = !phraseButton.classList.contains("revealed");
-        phraseButton.classList.toggle("revealed", revealed);
-        phraseButton.setAttribute("aria-expanded", String(revealed));
-      });
-    });
-  };
-
   const initReasonsStack = () => {
     const reasonsSection = document.getElementById("reasons");
     if (!reasonsSection) {
@@ -488,7 +473,6 @@
 
   renderSavedPlan();
   initTsumBackground();
-  initBlurPhrases();
   initReasonsStack();
   initCardSounds();
   initRatingTheme();

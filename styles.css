@@ -414,27 +414,8 @@ h2 {
   font-weight: inherit;
   line-height: inherit;
   color: inherit;
-  background: transparent;
-  border: none;
-  margin: 0;
   padding: 0 2px;
-  cursor: pointer;
   filter: blur(6px);
-  transition: filter 0.2s ease, color 0.2s ease;
-}
-
-.blur-phrase:hover,
-.blur-phrase:focus-visible {
-  color: #7d7890;
-}
-
-.blur-phrase:focus-visible {
-  outline: 2px dashed #cbb5df;
-  outline-offset: 2px;
-}
-
-.blur-phrase.revealed {
-  filter: blur(0);
 }
 
 .card-corner-tsum {
