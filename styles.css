@@ -791,6 +791,39 @@ h2 {
   margin-top: 8px;
 }
 
+.location-two-col {
+  align-items: start;
+}
+
+.location-form {
+  gap: 10px;
+}
+
+.location-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.location-actions .btn {
+  min-width: 136px;
+}
+
+.location-map {
+  margin-top: 10px;
+  width: 100%;
+  height: 320px;
+  border: 1px solid #f4c597;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #fffaf2;
+}
+
+.location-map .leaflet-control-attribution {
+  font-family: "Quicksand", "Trebuchet MS", sans-serif;
+  font-size: 0.7rem;
+}
+
 .preview-card.empty {
   color: #8b7e70;
   display: grid;
@@ -900,16 +933,50 @@ h2 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     justify-items: center;
     align-items: end;
-    gap: 6px;
+    gap: 4px;
+    padding-inline: 6px;
   }
 
   .tsum {
     min-width: 0;
+    width: 100%;
   }
 
   .tsum-photo {
-    width: clamp(72px, 25vw, 92px);
+    width: clamp(64px, 22vw, 82px);
     max-width: 100%;
+  }
+
+  .tsum-daisy .tsum-photo {
+    width: clamp(58px, 20vw, 72px);
+  }
+
+  .location-actions .btn {
+    min-width: 0;
+    flex: 1 1 44%;
+  }
+
+  .location-map {
+    height: 260px;
+  }
+}
+
+@media (max-width: 430px) {
+  .tsum-stack {
+    gap: 2px;
+    padding-inline: 2px;
+  }
+
+  .tsum-photo {
+    width: clamp(58px, 18vw, 72px);
+  }
+
+  .tsum-daisy .tsum-photo {
+    width: clamp(54px, 16vw, 64px);
+  }
+
+  .location-map {
+    height: 230px;
   }
 }
 

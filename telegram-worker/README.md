@@ -1,6 +1,7 @@
 # Telegram Worker Setup
 
-This worker receives review form submissions from GitHub Pages and forwards them to Telegram.
+This worker receives review/drawing submissions from GitHub Pages and forwards them to Telegram.
+It also provides live-location endpoints used by `location.html`.
 
 ## 1) Create the Telegram bot and chat target
 
@@ -33,6 +34,12 @@ After deploy, you will get a worker URL like:
 
 Use this endpoint in the website:
 `https://tsum-story-telegram.<subdomain>.workers.dev/notify`
+
+Live location endpoints:
+- `POST https://tsum-story-telegram.<subdomain>.workers.dev/location/update`
+- `GET  https://tsum-story-telegram.<subdomain>.workers.dev/location/latest?key=<SECRET_KEY>`
+
+Note: location data is held in worker memory (near real-time sharing), not permanent database storage.
 
 ## 3) Connect your website
 

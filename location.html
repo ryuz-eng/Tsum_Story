@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tsum Story | Live Location</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&family=Varela+Round&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  >
+</head>
+<body class="location-page" data-location-endpoint="https://tsum-story-telegram.tsumstory.workers.dev/location">
+  <div class="tsum-band top" id="bandTop"></div>
+  <div class="tsum-band bottom" id="bandBottom"></div>
+  <div class="tsum-sparks" id="tsumSparks"></div>
+
+  <div class="bg-shape bg-shape-a"></div>
+  <div class="bg-shape bg-shape-b"></div>
+  <div class="bg-shape bg-shape-c"></div>
+
+  <header class="site-header">
+    <a class="brand" href="index.html">Tsum Story</a>
+    <nav>
+      <a href="index.html">Why You're My Type</a>
+      <a href="location.html" aria-current="page">Live Location</a>
+      <a href="drawing-order.html">Drawing Order Form</a>
+      <a href="review.html">Review & Next Meeting</a>
+    </nav>
+  </header>
+
+  <main class="container two-col location-two-col">
+    <section class="panel reveal">
+      <p class="eyebrow">Live Share</p>
+      <h1>Share My Location</h1>
+      <p class="lead">Use this on your phone. Keep this tab open while sharing.</p>
+
+      <form id="shareLocationForm" class="review-form location-form">
+        <label>
+          Secret Key
+          <input
+            type="text"
+            name="shareKey"
+            id="shareKey"
+            placeholder="e.g. daisy-donald-2026"
+            minlength="4"
+            maxlength="60"
+            required
+          >
+        </label>
+
+        <div class="location-actions">
+          <button class="btn btn-primary" type="submit" id="startShareBtn">Start Sharing</button>
+          <button class="btn btn-ghost" type="button" id="stopShareBtn" disabled>Stop Sharing</button>
+        </div>
+        <p id="shareStatus" class="notify-status" aria-live="polite"></p>
+      </form>
+
+      <div class="preview-card" id="sharePreview">
+        Sharing is currently stopped.
+      </div>
+    </section>
+
+    <aside class="panel preview reveal">
+      <p class="eyebrow">Tracker</p>
+      <h2>Track Live Location</h2>
+      <p class="muted">Use the same Secret Key to view latest position.</p>
+
+      <form id="trackLocationForm" class="review-form location-form">
+        <label>
+          Secret Key
+          <input
+            type="text"
+            name="trackKey"
+            id="trackKey"
+            placeholder="Enter matching key"
+            minlength="4"
+            maxlength="60"
+            required
+          >
+        </label>
+
+        <div class="location-actions">
+          <button class="btn btn-primary" type="submit" id="startTrackBtn">Start Tracking</button>
+          <button class="btn btn-ghost" type="button" id="stopTrackBtn" disabled>Stop Tracking</button>
+          <button class="btn btn-ghost" type="button" id="refreshTrackBtn">Refresh Now</button>
+        </div>
+        <p id="trackStatus" class="notify-status" aria-live="polite"></p>
+      </form>
+
+      <div id="locationMap" class="location-map" role="img" aria-label="Live location map"></div>
+      <div id="trackDetails" class="preview-card empty">
+        No live location yet.
+      </div>
+    </aside>
+  </main>
+
+  <footer class="site-footer">
+    <p>Live pin, tiny Tsum edition.</p>
+  </footer>
+
+  <script src="app.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="location.js"></script>
+</body>
+</html>
